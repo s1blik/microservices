@@ -12,24 +12,32 @@ async function start() {
   await producer.connect();
   console.log("OrderService: connected.");
 
+
   // Send a test order every 5 seconds
-  setInterval(async () => {
-    const order = {
-      id: Date.now(),
-      amount: Math.floor(Math.random() * 100) + 1,
-      timestamp: new Date().toISOString(),
-    };
+  /*if (process.env.SEND_ORDERS === "true") {
+    console.log("OrderService: automatic order sending is ENABLED");
+  */
+    setInterval(async () => {
+      const order = {
+        id: Date.now(),
+        amount: Math.floor(Math.random() * 10) + 1,
+        timestamp: new Date().toISOString(),
+      };
 
-    await producer.send({
-      topic: "orders",
-      messages: [{ value: JSON.stringify(order) }],
-    });
+      await producer.send({
+        topic: "orders",
+        messages: [{ value: JSON.stringify(order) }],
+      });
 
-    console.log("OrderService: sent order:", order);
-  }, 5000);
+      console.log("OrderService: sent order:", order);
+    }, 5000);
+  /*} else {
+    console.log("OrderService: automatic order sending is DISABLED");
+  }*/
 }
+
 
 start().catch((err) => {
   console.error("OrderService error:", err);
-  process.exit(1);
+  //process.exit(1);
 });

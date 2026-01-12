@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS payments ( 
+	id SERIAL PRIMARY KEY,
+	 order_id BIGINT NOT NULL, 
+	amount INT NOT NULL, processed_at TIMESTAMP NOT NULL DEFAULT NOW()
+ ); 
